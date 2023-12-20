@@ -1,0 +1,19 @@
+﻿@page "/Form1"
+
+<h3>AntCalc</h3>
+
+<label>Please enter frequency in Mhz: </label>
+<input @bind="freq" />
+<p role="status">Wavelength: @wavelength m.</p>
+<button class="btn btn-primary" @onclick="Calc">Enter</button>
+
+
+@code {
+    long freq { get; set; }
+    double wavelength { get; set; }
+
+    private void Calc()
+    {
+        wavelength = 300 / freq;
+    }
+}
