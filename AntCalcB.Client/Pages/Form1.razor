@@ -1,22 +1,58 @@
 ﻿@page "/Form1"
+@*Note use of rendermode InteractiveWebassembly below in order to enable binding of clickevent to functions.*@
 @rendermode InteractiveWebAssembly
 
 <h3>AntCalc</h3>
 
-<label>Please enter frequency in Mhz: </label>
-<input @bind="freq" />
-<p role="status">Wavelength: @wavelength m.</p>
+<div class="card" style="width:98%">
+    <div class="card-body" style="background-color:lightblue">
+        <label>Please enter frequency in Mhz: </label>
+        <input @bind="freq" />
+        <p role="status">Wavelength: @wavelength m.</p>
 
-<button class="btn btn-primary" @onclick="Calc">Enter</button>
+        <button class="btn btn-primary" @onclick="Calc">Enter</button>
+    </div>
+</div>
 
+<div class="card" style="width:98%">
+    <div class="card-body" style="background-color:lightblue">
+        <h2>Dipole</h2>
+        <p>
+            The dipole is one of the most common types of antenna you will find.  It is also the easiest to construct if you are building your own.
+            In essence it is a single wire cut to one half wavelength and then cut in half exactly to provide a feedpoint. Of course, the wire is more dense than free space so the energy wave travels slower through it. This is what is known
+            as the velocity factor and should be taken into account when doing your calculations.  For copper (Cu) and steel (Fe) wire the velocity factor is approximately 96% (0.96) so multiply your wavelength calculation by this.
+            The dipole is also the basis for many other antennas.  It is the driven element of many beams/Yagis - both HF, VHF and higher. The current distribution on a dipole is in opposition to
+            the voltage distribution so where the current is at maximum, voltage is at zero and visa versa.  The radiation is all around the antenna, so if mounted vertically it will give omnidirectional radiation and if mounted horizontally
+            it will be off the sides.  The feedpoint impedance of a dipole is 70ohms at the resonant frequency and they are single band antennas. An Off Centre Fed Dipole is cut at the 200ohm point, 1/3 of the way along and fed via a 4:1 BALUN for multi band use.
+        </p>
+        <p role="status">Dipole length: @diplength m.</p>
+    </div>
+</div>
+
+<div class="card" style="width:98%">
+    <div class="card-body" style="background-color:lightblue">
+        <h2>Loop</h2>
+        <p>
+            The loop antenna comes in many shapes but the most common are the delta loop which is a triangle and the quad loop which is a square.
+            Whichever shape is chosen, the antenna element is cut to one full wave-length. The gain provided by the loop does depend on the shape. A delta loop can provide up to 3.2dBd (equivalent to a small beam) and the quad loop up to 2.8dBd.
+            For a single band loop, the antenna should be fed via a 2:1 BALUN and for a multi-band loop it should be fed via a 4:1 BALUN.
+        </p>
+        <p role="status">Loop circumference: @looplength m.</p>
+    </div>
+</div>
 
 @code {
     public double freq { get; set; }
     public double wavelength = 0;
+    private const double v = 0.96;
+    public double diplength;
+    public double looplength;
 
     private void Calc()
     {
         wavelength = 300 / freq;
+        diplength = (wavelength / 2) * v;
+        looplength = wavelength * v;
     }
 
     
